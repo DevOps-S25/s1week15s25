@@ -1,0 +1,37 @@
+name: wf-cd-release
+on:
+  push:
+    branches:
+      - release/**
+jobs:
+  upload-artifact-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository On the Runner
+        uses: actions/checkout@v4
+        with:
+          ref: "${{github.ref}}"
+      - name: checked out the branch name
+        run: echo "branch name ${github.ref}"
+      - name: Build Website With Parcel
+        run: npx parcel build "./src/index.html" --dist-dir "./rel-dist" --public-url "./"
+      - name: Upload Build artifacts
+        uses: actions/upload-pages-artifacts@v3
+        with:
+          path: "./rel-dist"
+          name: "build-artifact-release"
+ 
+  deploy-artifact-release:
+    needs: upload-artifact-release
+    runs-on: ubuntu-latest
+    environment:
+      name: "staging-env"
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+      - name: Deploy Build artifacts On GH pages
+        uses: actions/deploy-pages@v4
+        with:
+          artifact_name: "build-artifact-release"
+          token: "${{github.token}}"
