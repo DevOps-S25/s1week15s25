@@ -12,7 +12,7 @@ jobs:
         with:
           ref: "${{github.ref}}"
       - name: Checked Out Branch name
-        run: echo "Branch Name  ${github.ref}"
+        run: echo "Branch Name  ${{github.ref}}"
       - name: Build Wesbite With Parcel 
         run: npx parcel build "./src/index.html" --dist-dir "./rel-dist" --public-url "./" 
       - name: Upload Build Artifacts 
