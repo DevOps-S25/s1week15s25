@@ -12,7 +12,7 @@ jobs:
         with:
           ref: "${{github.ref}}"
       - name: checked out the branch name
-        run: echo "branch name ${github.ref}"
+        run: echo "branch name ${{github.ref}}"
       - name: Build Website With Parcel
         run: npx parcel build "./src/index.html" --dist-dir "./rel-dist" --public-url "./"
       - name: Upload Build artifacts
